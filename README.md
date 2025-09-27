@@ -1,6 +1,6 @@
 # STEWFE -- Split Terminal Emulator Window For Editing
 
-![img/a-split-terminal-and-editing-session.png]
+![screenshot of stewfe in action](img/a-split-terminal-and-editing-session.png)
 
 Do you use [iTerm](https://iterm2.com/) or
 [tmux](https://github.com/tmux/tmux/wiki) all day? Do you ever split iTerm or
