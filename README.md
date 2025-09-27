@@ -9,7 +9,7 @@ Here's a little set of scripts to make that a little easier.
 
 ## Installation
 
-Place `stewfe_editor`` somewhere in your path, like `~/bin/`. Source
+Place `stewfe_editor` somewhere in your path, like `~/bin/`. Source
 `stewfe.(nu|sh)` depending on what shell you use. Opitionally you can an alias
 for your editor to `stewfe` or just use the `stewfe` function directly.
 
@@ -50,19 +50,19 @@ There are several settings you must set in order for these script to fully work.
 ## Details
 
 The sourced shell scripts define a shell function `stewfe` that tests for tmux,
-iTerm, ssh connections and executes ${EDITOR} in an appropriate context. For the 
+iTerm, ssh connections and executes `${EDITOR}` in an appropriate context. For the 
 iTerm context it executes `stewfe_editor`. 
 
-The shell function depends on ${EDITOR} being set so be sure to set ${EDITOR}
+The shell function depends on `${EDITOR}` being set so be sure to set `${EDITOR}`
 before you source the appropriate shell script. 
 
-Furthermore I would NOT recommend setting ${EDITOR}=stewfe as you'll create a
+Furthermore I would NOT recommend setting `${EDITOR}=stewfe` as you'll create a
 circular dependancy and you may inadvertently summon the devil.
 
-`stewfe_editor` is needed to call `osascript(1)` to execute ${EDITOR} within
+`stewfe_editor` is needed to call `osascript(1)` to execute `${EDITOR}` within
 iTerm with the default profile inside a vertical split. For conviance
 `osascript` is called again to change window focus to the newly created
-${EDITOR} window. You must set iTerm to **Reuse previous session's directory**
+`${EDITOR}` window. You must set iTerm to **Reuse previous session's directory**
 (see above).
 
 ### Dependencies
@@ -72,19 +72,19 @@ ${EDITOR} window. You must set iTerm to **Reuse previous session's directory**
 
 ## Future work
 
-Have a fix? [Send me a PR!](link) Have an problem that you can't fix? Send an
-[Issue Request](link).
+Have a fix? [Send me a PR!](https://github.com/timball/stewfe/pulls) Have an problem that you can't fix? Send an
+[Issue Request](https://github.com/timball/stewfe/issues).
 
 - What about terminal emulators that aren't iTerm?
     - There are lots of terminal emulators that aren't iTerm. There are lots of
       folks that use splittable terminal emulators not on a Mac. I hear you,
-      please send a PR, or at least write an [Issue](link)
+      please send a PR, or at least write an [Issue](https://github.com/timball/stewfe/issues)
 
 - What about some other editor?
     - Sure you can do that, maybe I should make something support that.
 
 - Installing this is janky.
-    - Yup, sorry. It WFM but am HAPPY to take [PRs](link) to make this less
+    - Yup, sorry. It WFM but am HAPPY to take [PRs](https://github.com/timball/stewfe/pulls) to make this less
       jank. For instance an install script would be nice, but I also hate when
       things magically mess with my shell configs.
 
@@ -94,7 +94,7 @@ Have a fix? [Send me a PR!](link) Have an problem that you can't fix? Send an
 
 ## Credits
 
-Author: @timball
+Author: [@timball](https://github.com/timball/)
 Date: Fri Sep 19 15:44:18 EDT 2025
 
 ## License
