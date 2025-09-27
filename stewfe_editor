@@ -1,0 +1,80 @@
+#!/bin/bash
+#
+# iterm_editor
+#
+# Open vim in a new split pane in iTerm2 (macOS).
+#
+# Intended to alias as vi/vim in .zshrc when using iTerm2, but other console
+# editors probably work fine.
+#
+# Set iTerm to open new sessions in the current working directory:
+#   Preferences > Advanced: "Working directory for New Split
+#       Panes" -> Reuse previous session's directory
+#
+# To get the focus change to work right you must enable Accessibility for
+# iTerm to "control your computer" System Settings -> Privacy & Security ->
+# Accessibility -> + sign and navigate to list and add iTerm
+#
+# --timbalL@gmail.com Mon Aug 18 15:37:38 EDT 2025
+
+set -euo pipefail
+
+PWD=$(pwd)                      # preserve cwd otherwise we're in ${HOME}
+APP="iTerm2"                    # change to "iTerm" if you use the old bundle name
+CMD_ARR=${EDITOR}               # the terminal editor
+
+if [[ -z ${EDITOR} ]]; then
+    echo "No \${EDITOR} environment variable set"
+    exit 1
+fi
+
+# Build argument list safely
+if [[ $# -gt 0 ]]; then
+  for arg in "$@"; do
+    if [[ "$arg" == -* ]]; then
+      # vim flag, pass through unchanged
+      CMD_ARR+=("$arg")
+    elif [[ "$arg" == ./* ]]; then
+      # ./relative path -> normalize to absolute within PWD (strip leading ./)
+      CMD_ARR+=("${PWD}/${arg#./}")
+    elif [[ "$arg" == /* ]]; then
+      # absolute path
+      CMD_ARR+=("$arg")
+    else
+      # bare filename -> treat as path in current directory
+      CMD_ARR+=("${PWD}/$arg")
+    fi
+  done
+fi
+
+# Join argv into a single shell-safe command (e.g., vim 'My File.txt')
+shell_safe_cmd=""
+for part in "${CMD_ARR[@]}"; do
+  printf -v q '%q' "$part"
+  shell_safe_cmd+="$q "
+done
+shell_safe_cmd="${shell_safe_cmd% }"
+
+# Now escape for embedding inside an AppleScript double-quoted string
+# (escape backslashes and double quotes)
+applescript_safe_cmd=$(printf '%s' "$shell_safe_cmd" | sed 's/\\/\\\\/g; s/"/\\"/g')
+
+/usr/bin/osascript <<EOF
+tell application "$APP"
+  tell current window
+    tell current session
+      split vertically with default profile command "$applescript_safe_cmd"
+    end tell
+  end tell
+end tell
+EOF
+
+# If you want to simulate a pane focus change after splitting, you can re-enable
+# the System Events keystroke below. Keep it disabled by default for reliability.
+#: <<'OPTIONAL_FOCUS'
+/usr/bin/osascript <<'AS'
+tell application "System Events"
+  keystroke (ASCII character 29) using {command down, option down} -- Cmd-Option-Right
+end tell
+AS
+#: OPTIONAL_FOCUS
