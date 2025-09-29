@@ -1,0 +1,29 @@
+#!/bin/zsh
+# ghostty_vi — open vim in a new Ghostty split; close the split when vim exits
+
+# Build a safe vim command that replaces the shell
+cmd=(exec ${EDITOR})
+if (( $# > 0 )); then
+  for a in "$@"; do
+    cmd+=("$(printf '%q' "$a")")
+  done
+fi
+
+# Compose the command we'll paste into the new split
+run_cmd="cd \"$(pwd)\" && ${cmd[*]}"
+
+# Escape for AppleScript string
+esc_cmd=$(printf '%s' "$run_cmd" | sed 's/\\/\\\\/g; s/"/\\"/g')
+
+osascript <<EOF
+tell application "Ghostty" to activate
+tell application "System Events"
+    -- Open a new split (adjust this keystroke to match your split shortcut)
+    keystroke "d" using command down
+    delay 0.1
+    -- Paste the command and run it
+    set the clipboard to "$esc_cmd"
+    keystroke "v" using command down
+    keystroke return
+end tell
+EOF
