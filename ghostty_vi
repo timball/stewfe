@@ -18,6 +18,8 @@ esc_cmd=$(printf '%s' "$run_cmd" | sed 's/\\/\\\\/g; s/"/\\"/g')
 osascript <<EOF
 tell application "Ghostty" to activate
 tell application "System Events"
+    -- save previous clipboard contents
+    set prevClipboard to the clipboard
     -- Open a new split (adjust this keystroke to match your split shortcut)
     keystroke "d" using command down
     delay 0.1
@@ -25,5 +27,6 @@ tell application "System Events"
     set the clipboard to "$esc_cmd"
     keystroke "v" using command down
     keystroke return
+    set the clipboard to prevClipboard
 end tell
 EOF
